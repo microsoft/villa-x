@@ -1,0 +1,167 @@
+defaults:
+  - _self_
+hydra:
+  run:
+    dir: ${log_dir}
+_target_: src.agent.eval.EvalAgent
+
+policy:
+  _target_: src.model.vla.  x.VillaX
+
+log_dir_sub_dir:
+log_dir: ${oc.env:VLA_LOG_DIR}
+name: ${oc.env:VLA_NAME}
+device: cuda
+seed: 42
+checkpoint_path:
+n_eval_episode: ${eval:'9 * 4 * 3 * 10'} # 9 apple locations, 4 urdfs, 3 robot locations/rgb_overlay_paths, 10 trials each
+n_video: ${n_eval_episode}
+
+env:
+  task:
+  adapter:
+    _target_: src.agent.env_adapter.simpler.EDRSimplerAdapter
+    dataset_statistics_path: config/fractal_statistics.json
+    pretrained_model_path: ${oc.env:TRANSFORMERS_CACHE}
+    tokenizer_padding: max_length
+    max_seq_len: 276 # fixed 256 for image + max 20 for text
+    num_image_tokens: 256
+    image_size: [224, 224]
+
+flow_sampling: sepbeta
+num_inference_steps: 10
+final_action_clip_value: 1.0 # data normalized in [-1,1]
+use_torch_compile: false
+use_bf16: false
+
+flow_alpha1: 1.5
+flow_beta1: 1.0
+flow_alpha2: 5.0
+flow_beta2: 1.0
+
+state_type: euler
+action_type: euler
+normalization_type: quantile
+data_path: /mnt/shared_data/dataset
+action_ensemble: None
+n_datasets: 2
+act_steps: 2
+proprio_cond_steps: 1
+latent_action_n_tokens: 24
+latent_action_n_tokens_hist: 0
+real_action_n_tokens: 4
+latent_action_dim: 32 #
+robot_action_dim: 7
+proprio_dim: 7 # POS_EULER
+
+latent_action_loss_coef: 1.0
+
+seq_tokenizer:
+  _target_: src.tokenizer.lam.LAM
+  config:
+    use_continuous: True
+    sampling_interval: 1
+    dataset_statistics_path: config/train_statistics.json
+    ckpt_dir: /path/to/ckpt_dir
+
+# Image Encoder Configuration
+robot_image_encoder_tokens: 16
+robot_image_encoder:
+  pretrained:
+    _target_: src.model.hpt_xy.ResNet
+    resnet_model: "resnet18"
+  heads: 8
+  dim_head: 256
+  query_dim: 512
+
+mixture:
+  vlm: # gemma
+    hidden_size: 2048
+    intermediate_size: 16384
+    use_final_norm: False
+    cache: True
+    use_quantize: ${quantize}
+    use_lora: ${lora}
+    adaptive_mode: # not applicable for gemma
+    rope_theta: 10000.0 # 10000 in gemma
+  latent_action:
+    hidden_size: 1024
+    intermediate_size: 4096
+    use_final_norm: True # technically no, but sharing weights with action anyway
+    cache: False
+    use_quantize: False
+    use_lora: False
+    adaptive_mode: ${action_expert_adaptive_mode}
+    rope_theta: ${action_expert_rope_theta}
+  proprio:
+    hidden_size: 1024
+    intermediate_size: 4096
+    use_final_norm: True # technically no, but sharing weights with action anyway
+    cache: False
+    use_quantize: False
+    use_lora: False
+    adaptive_mode: ${action_expert_adaptive_mode}
+    rope_theta: ${action_expert_rope_theta}
+  action:
+    hidden_size: 1024
+    intermediate_size: 4096
+    use_final_norm: True
+    cache: False
+    use_quantize: False
+    use_lora: False
+    adaptive_mode: ${action_expert_adaptive_mode}
+    rope_theta: ${action_expert_rope_theta}
+action_expert_adaptive_mode: # adaLN, adaLN-Zero, or None
+time_hidden_size: 256 # only applicable if using adaptive
+time_max_period: 100.0 # provided ckpts used 10000.0 for both time_max_period and action_expert_rope_theta
+action_expert_rope_theta: 100.0
+quantize: False
+lora: False
+lora_r: 32
+lora_dropout: 0.0
+max_image_text_tokens: ${env.adapter.max_seq_len}
+
+# Fixed
+image_token_index: 257152
+vocab_size: 257216
+pad_token_id: 0
+
+vision:
+  _target_: src.model.paligemma.siglip.SiglipVisionModel
+  config:
+    hidden_size: 1152 # siglip
+    intermediate_size: 4304
+    num_hidden_layers: 27
+    num_attention_heads: 16
+    num_channels: 3
+    image_size: 224
+    patch_size: 14
+    layer_norm_eps: 1e-6
+    attention_dropout: 0.0
+    num_image_tokens: 256
+
+vision_projector:
+  _target_: src.model.paligemma.siglip.PaliGemmaMultiModalProjector
+  config:
+    vision_config:
+      hidden_size: 1152
+      projection_dim: 2048
+
+joint:
+  _target_: src.model.vla.joint_model.JointModel
+  config:
+    action_expert_adaptive_mode: ${action_expert_adaptive_mode}
+    time_hidden_size: ${time_hidden_size}
+    mixture: ${mixture}
+    lora:
+      r: ${lora_r}
+      dropout: ${lora_dropout}
+    #
+    num_hidden_layers: 18
+    num_attention_heads: 8
+    num_key_value_heads: 1
+    head_dim: 256
+    rms_norm_eps: 1e-6
+    attention_bias: False
+    attention_dropout: 0.0
+    pad_token_id: ${pad_token_id}
