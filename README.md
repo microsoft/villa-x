@@ -1,6 +1,6 @@
 <div align="center">
 
-# villa-X <br> <sub>A Vision-Language-Laent-Action Model</sub>
+# villa-X: A Vision-Language-Laent-Action Model
 
 </div>
 
