@@ -1,4 +1,8 @@
-# Evaluate in Simpler Environment
+<div align="center">
+
+# villa-X <br> <sub>A Vision-Language-Laent-Action Model</sub>
+
+</div>
 
 1. Prepare the checkpoints
 2. Install the required packages
