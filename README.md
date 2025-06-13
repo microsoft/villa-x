@@ -2,14 +2,24 @@
 
 # villa-X: A Vision-Language-Laent-Action Model
 
+[![arXiv](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv&logoColor=white)](./) &ensp; [![Project](https://img.shields.io/badge/Project-Page-blue?logo=homepage&logoColor=white)](https://microsoft.github.io/villa-x) &ensp; [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-yellow)](https://huggingface.co/microsoft/villa-x)
 </div>
 
-1. Prepare the checkpoints
-2. Install the required packages
-3. Run the evaluation script
+</div>
 
-```
-bash scripts/eval.sh
+## 🔥 News
+
+* 2025/XX/XX:
+
+## 🔧 Setup
+
+* XXX
+
+## ➡️ Getting Started
+
+## 📑 BibTeX
+
+```bibtex
 ```
 
 ## Trademarks
