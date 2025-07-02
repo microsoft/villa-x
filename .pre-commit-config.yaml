@@ -1,0 +1,43 @@
+exclude: ".git"
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.3
+    hooks:
+      - id: ruff-format # formatter
+        types_or: [python, pyi, jupyter, toml]
+      - id: ruff # linter
+        types_or: [python, pyi, jupyter, toml]
+        args: [--fix, --show-fixes]
+
+  # - repo: https://github.com/pycqa/isort
+  #   rev: 5.12.0
+  #   hooks:
+  #     - id: isort
+  #       exclude: __init__.py
+  #       args: ["--profile", "black"]
+
+  # - repo: https://github.com/RobertCraigie/pyright-python
+  #   rev: v1.1.379
+  #   hooks:
+  #     - id: pyright
+  #       language_version: python3.10
+  #       additional_dependencies:
+  #         [
+  #           einops,
+  #           pillow,
+  #           tensorflow,
+  #           torch,
+  #         ]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
