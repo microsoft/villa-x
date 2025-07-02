@@ -22,7 +22,7 @@ dependencies = [
     "pre-commit>=4.0.1",
     "pretty_errors",
     "protobuf==3.20.3",
-    "torch==2.6.0",
+    "torch==2.7.1",
     "transformers==4.47.1",
     "tqdm",
     "wandb",
