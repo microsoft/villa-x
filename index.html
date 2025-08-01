@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Enhancing Latent Action Modeling in Vision-Language-Action Models.">
+  <meta name="keywords" content="villa-X, VLA, latent action">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>villa-X: Enhancing Latent Action Modeling in Vision-Language-Action Models</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.0/dist/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <link rel="icon" href="./static/images/favicon.png">
+
+  <script defer src="./static/js/jquery.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+  <script defer src="./static/js/bulma-carousel.min.js"></script>
+  <script defer src="./static/js/bulma-slider.min.js"></script>
+  <script defer src="./static/js/index.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body" style="padding-bottom: 12px;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <div class="content">
+            <img src="static/images/villa-x-transparent.png" alt="villa-x" style="height: 100px;" />
+          </div>
+          <h1 class="title is-1 publication-title">
+            Enhancing Latent Action Modeling in VLAs
+          </h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://cospui.github.io/">Xiaoyu Chen</a><sup>2*†</sup>,</span>
+            <span class="author-block">
+              <a href="https://github.com/HSPK">Hangxing Wei</a><sup>3*†</sup>,</span>
+            <span class="author-block">
+              <a href="https://zpschang.github.io/">Pushi Zhang</a><sup>1*</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=q7M83KQAAAAJ&hl=en">Chuheng Zhang</a><sup>1*</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://kaixin96.github.io">Kaixin Wang</a><sup>1*</sup>,
+            </span>
+            <br>
+            <span class="author-block">
+              <a href="https://robert-gyj.github.io/">Yanjiang Guo</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=TiHUw0UAAAAJ&hl=zh-CN">Rushuai Yang</a><sup>4†</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.lamda.nju.edu.cn/wangyc/">Yucen Wang</a><sup>5†</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://github.com/xiao-xinquan">Xinquan Xiao</a><sup>2†</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=b-LJkLQAAAAJ&hl=en">Li Zhao</a><sup>1*§</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://people.iiis.tsinghua.edu.cn/~jychen/">Jianyu Chen</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://sites.google.com/view/jiangbian">Jiang Bian</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-6 publication-authors">
+            <span class="author-block"><sup>*</sup>Equal contribution</span>
+            <span class="author-block"><sup>†</sup>Interns at Microsoft Research</span>
+            <span class="author-block"><sup>§</sup>Project lead</span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Microsoft Research</span>
+            <span class="author-block"><sup>2</sup>Tsinghua University</span>
+            <span class="author-block"><sup>3</sup>Wuhan University</span>
+            <span class="author-block"><sup>4</sup>Hong Kong University of Science and Technology</span>
+            <span class="author-block"><sup>5</sup>Nanjing University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2507.23682"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      📃
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/microsoft/villa-x/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <iconify-icon icon="mingcute:github-fill" height="20px"></iconify-icon>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Model Link. -->
+               <span class="link-block">
+                  <a href="https://huggingface.co/microsoft/villa-x"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      🤗
+                    </span>
+                    <span>Model</span>
+                  </a>
+                </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser" >
+  <div class="container" style="width: 50%; margin: auto;">
+    <div class="hero-body">
+      <video id="teaser" preload="none" poster="./static/videos/teaser.png" muted playsinline controls height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <div style="height: 10px;"></div>
+      <h2 class="subtitle has-text-centered">
+        <strong>TL;DR:</strong> villa-X bridges <em>high-level planning</em> and <em>low-level execution</em> via <strong>latent actions</strong>. 
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Model -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">
+          <img src="./static/images/villa-x-transparent.png" alt="villa-X" style="height: 1em; vertical-align: text-bottom;" />
+          : a <b style="color:#7195c9">Vi</b>sual-<b style="color:#7195c9">L</b>anguage-<b style="color:#7195c9">L</b>atent-<b style="color:#7195c9">A</b>ction Model</h2>
+
+        <!-- Model -->
+        <div class="content has-text-justified">
+          <p>
+            At a high level, our villa-X consists of two main components:
+            <ul>
+              <li>a <strong>LAM</strong> (Latent Action Model) module that infers latent actions from a pair of observations;</li>
+              <li>an <strong>ACT</strong> (Actor) module that jointly models latent actions and robot actions
+                  given an initial visual observation and a textual task instruction.</li>
+            </ul>
+          </p>
+          <img src="./static/images/villa-pi-arch.png" alt="model architecture" />
+          <p>
+            The <strong>LAM</strong> consists of an Inverse Dynamic Model (<strong>IDM</strong>), a visual Forward Dynamic Model (<strong>FDM</strong>),
+            and a proprio Forward Dynamic Model (<strong>proprio FDM</strong>).
+            The IDM takes in 2 adjacent frames,
+            <img src="static/images/symbol-o.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(o_t\) and
+            <img src="static/images/symbol-o.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(o_{t+K}\), and outputs a latent action
+            <img src="static/images/symbol-z.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(z_t\). Then, the latent action
+            <img src="static/images/symbol-z.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(z_t\) and
+            the first frame
+            <img src="static/images/symbol-o.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(o_t\) are passed into the FDM to predict a reconstructed frame
+            <img src="static/images/symbol-o.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(\hat{o}_{t+K}\). At the same time, the latent action
+            <img src="static/images/symbol-z.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(z_t\) and
+            the low-level robot states
+            <img src="static/images/symbol-q.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(q_t\) are passed into the proprio FDM to predict future robot states
+            <img src="static/images/symbol-q.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(\hat{q}_{t+1}\), \(\cdots\), \(\hat{q}_{t+K}\)
+            and robot actions
+            <img src="static/images/symbol-a.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(\hat{a}_{t}\), \(\cdots\), \(\hat{a}_{t+K-1}\).
+          </p>
+          <p>
+            The <strong>ACT</strong> module is built upon a pre-trained Vision-Language-Model (<strong>VLM</strong>).
+            The <strong>VLM</strong> first process the given frame
+            <img src="static/images/symbol-o.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(o_t\) and the language instruction
+            <img src="static/images/symbol-l.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(l\) to produce latent features. Then, conditioned on these latent features (through attention),
+            the <strong>ACT-latent</strong> adopts a diffusion-based model to predict a sequence of \(n\) latent actions
+            <img src="static/images/symbol-z.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(\hat{z}_t\), \(\cdots\), \(\hat{z}_{t+(n-1)K}\). Concurrently, the <strong>ACT-robot</strong> predicts
+            a sequence of \(m\) robot actions
+            <img src="static/images/symbol-a.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+            \(\hat{a}_{t}\), \(\cdots\), \(\hat{a}_{t+m-1}\),
+            conditioned on the internal features of both <strong>VLM</strong> and <strong>ACT-latent</strong>.
+          </p>
+          <p>
+            Both <strong>LAM</strong> and <strong>ACT</strong> are trained on a large collection of robotic data and human
+            egocentric videos, including Open X-Embodiment, Something-Something V2, Ego4D, and others.
+          </p>
+        </div>
+
+      </div>
+    </div>
+    <!--/ Model -->
+
+
+    <!-- Latent action planning -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">
+          <iconify-icon icon="streamline-freehand:send-email-paper-plane-1" height="1em" style="color: #7195c9; vertical-align: -0.15em;"></iconify-icon>
+          Motion planning with latent actions
+        </h2>
+
+        <p style="margin-bottom: 0.5em;">
+          Given an image
+          <img src="static/images/symbol-o.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+          and a language instruction
+          <img src="static/images/symbol-l.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+          , we use the trained <strong>ACT-latent</strong> to plan latent actions
+          <img src="static/images/symbol-z.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+          . To visualize the results, we train a separate world model to render future frames resulting from
+          a sequence of latent actions. Below, we show the predicted outcomes of applying the latent action
+          sequences generated by <strong>ACT-latent</strong> from different language instructions,
+          all conditioned on the same input image.
+        </p>
+        <p style="margin-bottom: 1em;">
+          Click on different instructions to view the corresponding outcomes. <em>In-distribution</em> refers to
+          samples from the validation set of our training data, while <em>Out-of-distribution</em> refers to
+          samples from the Realman robot arm, a new embodiment that was never seen during training.
+          The results demonstrate that <strong>ACT-latent</strong> successfully follows the language instructions to solve the tasks,
+          while accurately identifying target objects and generating latent actions that successfully follow the instructions.
+          <strong>ACT-latent</strong> also successfully identifies the concepts in the emoji, which rarely appears in robot datasets,
+          suggesting that villa-X keeps the general vision-language capabilities in the initial VLM model after pre-training.
+        </p>
+
+        <h3 class="title is-size-4" style="font-weight:300">In-distribution</h3>
+        <div class="columns is-centered">
+          <div class="column">
+            <div class="content has-text-justified">
+              <div class="video-trigger">
+                <img class="initial-frame" src="./static/videos/plan_latent_action/id/rt1_0-initial.png" alt="" />
+
+                <!-- Hidden video player -->
+                <video class="video-player" poster="./static/videos/plan_latent_action/id/rt1_0-initial.png"
+                  preload="metadata" playsinline muted autoplay></video>
+
+                <!-- Buttons on top of image -->
+                <button class="video-button" style="top: 55%; left: 25%;"
+                  data-video='./static/videos/plan_latent_action/id/rt1_0-open top drawer.mp4'>1</button>
+                <button class="video-button" style="top: 65%; left: 40%;"
+                  data-video='./static/videos/plan_latent_action/id/rt1_0-open middle drawer.mp4'>2</button>
+                <button class="video-button" style="top: 76%; left: 55%;"
+                  data-video='./static/videos/plan_latent_action/id/rt1_0-open bottom drawer.mp4'>3</button>
+              </div>
+              <p>
+                <iconify-icon icon="bi:1-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Open top drawer <br>
+                <iconify-icon icon="bi:2-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Open middle drawer <br>
+                <iconify-icon icon="bi:3-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Open bottom drawer
+              </p>
+            </div>
+          </div>
+
+          <div class="column">
+            <div class="content has-text-justified">
+              <div class="video-trigger">
+                <img class="initial-frame" src="./static/videos/plan_latent_action/id/rt1_1-initial.png" alt="" />
+
+                <!-- Hidden video player -->
+                <video class="video-player" poster="./static/videos/plan_latent_action/id/rt1_1-initial.png"
+                  preload="metadata" playsinline muted autoplay></video>
+
+                <!-- Buttons on top of image -->
+                <button class="video-button" style="top: 55%; left: 22%;"
+                  data-video='./static/videos/plan_latent_action/id/rt1_1-move orange near rxbar blueberry.mp4'>1</button>
+                <button class="video-button" style="top: 70%; left: 60%;"
+                  data-video='./static/videos/plan_latent_action/id/rt1_1-move orange near the apple.mp4'>2</button>
+              </div>
+              <p>
+                <iconify-icon icon="bi:1-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Move orange near rxbar blueberry <br>
+                <iconify-icon icon="bi:2-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Move orange near the apple
+              </p>
+            </div>
+          </div>
+
+          <div class="column">
+            <div class="content has-text-justified">
+              <div class="video-trigger">
+                <img class="initial-frame" src="./static/videos/plan_latent_action/id/bridge_0-initial.png" alt="" />
+
+                <!-- Hidden video player -->
+                <video class="video-player" poster="./static/videos/plan_latent_action/id/bridge_0-initial.png"
+                  preload="metadata" playsinline muted autoplay></video>
+
+                <!-- Buttons on top of image -->
+                <button class="video-button" style="top: 70%; left: 55%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_0-Pick up the brush.mp4'>1</button>
+                <button class="video-button" style="top: 20%; left: 15%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_0-Put the tomato in the pot.mp4'>2</button>
+                <button class="video-button" style="top: 40%; left: 30%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_0-Slide the purple towel.mp4'>3</button>
+              </div>
+              <p>
+                <iconify-icon icon="bi:1-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Pick up the brush <br>
+                <iconify-icon icon="bi:2-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Put the tomato in the pot <br>
+                <iconify-icon icon="bi:3-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Slide the purple towel
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns is-centered">
+          <div class="column">
+            <div class="content has-text-justified">
+              <div class="video-trigger">
+                <img class="initial-frame" src="./static/videos/plan_latent_action/id/bridge_1-initial.png" alt="" />
+
+                <!-- Hidden video player -->
+                <video class="video-player" poster="./static/videos/plan_latent_action/id/bridge_1-initial.png"
+                  preload="metadata" playsinline muted autoplay></video>
+
+                <!-- Buttons on top of image -->
+                <button class="video-button" style="top: 55%; left: 45%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_1-move the silver pot to the left burner.mp4'>1</button>
+                <button class="video-button" style="top: 40%; left: 80%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_1-pick the green fruit into the pot.mp4'>2</button>
+                <button class="video-button" style="top: 50%; left: 15%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_1-pick up the spoon.mp4'>3</button>
+              </div>
+              <p>
+                <iconify-icon icon="bi:1-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Move the silver pot to the left burner <br>
+                <iconify-icon icon="bi:2-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Pick the green fruit into the pot <br>
+                <iconify-icon icon="bi:3-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Pick up the spoon
+              </p>
+            </div>
+          </div>
+
+          <div class="column">
+            <div class="content has-text-justified">
+              <div class="video-trigger">
+                <img class="initial-frame" src="./static/videos/plan_latent_action/id/bridge_2-initial.png" alt="" />
+
+                <!-- Hidden video player -->
+                <video class="video-player" poster="./static/videos/plan_latent_action/id/bridge_2-initial.png"
+                  preload="metadata" playsinline muted autoplay></video>
+
+                <!-- Buttons on top of image -->
+                <button class="video-button" style="top: 35%; left: 50%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_2-place the red object inside the silver pot.mp4'>1</button>
+                <button class="video-button" style="top: 50%; left: 15%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_2-place the red object into the basket.mp4'>2</button>
+                <button class="video-button" style="top: 85%; left: 70%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_2-place the red object into the sink.mp4'>3</button>
+              </div>
+              <p>
+                <iconify-icon icon="bi:1-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Place the red object in the silver pot <br>
+                <iconify-icon icon="bi:2-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Place the red object into the basket <br>
+                <iconify-icon icon="bi:3-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Place the red object into the sink
+              </p>
+            </div>
+          </div>
+
+          <div class="column">
+            <div class="content has-text-justified">
+              <div class="video-trigger">
+                <img class="initial-frame" src="./static/videos/plan_latent_action/id/bridge_3-initial.png" alt="" />
+
+                <!-- Hidden video player -->
+                <video class="video-player" poster="./static/videos/plan_latent_action/id/bridge_3-initial.png"
+                  preload="metadata" playsinline muted autoplay></video>
+
+                <!-- Buttons on top of image -->
+                <button class="video-button" style="top: 35%; left: 50%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_3-Put the blue fork near the banana.mp4'>1</button>
+                <button class="video-button" style="top: 60%; left: 65%;"
+                  data-video='./static/videos/plan_latent_action/id/bridge_3-Put the blue fork on the blue cloth.mp4'>2</button>
+              </div>
+              <p>
+                <iconify-icon icon="bi:1-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Put the blue fork near the banana <br>
+                <iconify-icon icon="bi:2-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Put the blue fork on the blue cloth
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <h3 class="title is-size-4" style="font-weight:300">Out-of-distribution</h3>
+
+        <div class="columns is-centered">
+          <div class="column">
+            <div class="content has-text-justified">
+              <div class="video-trigger">
+                <img class="initial-frame" src="./static/videos/plan_latent_action/ood/OOD_0-initial.png" alt="" />
+
+                <!-- Hidden video player -->
+                <video class="video-player" poster="./static/videos/plan_latent_action/ood/OOD_0-initial.png"
+                  preload="metadata" playsinline muted autoplay></video>
+
+                <!-- Buttons on top of image -->
+                <button class="video-button" style="top: 48%; left: 8%;"
+                  data-video='./static/videos/plan_latent_action/ood/OOD_0-Touch the corn.mp4'>1</button>
+                <button class="video-button" style="top: 54%; left: 25%;"
+                  data-video='./static/videos/plan_latent_action/ood/OOD_0-Touch the bowl.mp4'>2</button>
+                <button class="video-button" style="top: 60%; left: 42%;"
+                  data-video='./static/videos/plan_latent_action/ood/OOD_0-Touch the leaf.mp4'>3</button>
+              </div>
+              <p>
+                <iconify-icon icon="bi:1-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Touch the corn <br>
+                <iconify-icon icon="bi:2-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Touch the bowl <br>
+                <iconify-icon icon="bi:3-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Touch the leaf
+              </p>
+            </div>
+          </div>
+
+          <div class="column">
+            <div class="content has-text-justified">
+              <div class="video-trigger">
+                <img class="initial-frame" src="./static/videos/plan_latent_action/ood/OOD_1-initial.png" alt="" />
+
+                <!-- Hidden video player -->
+                <video class="video-player" poster="./static/videos/plan_latent_action/ood/OOD_1-initial.png"
+                  preload="metadata" playsinline muted autoplay></video>
+
+                <!-- Buttons on top of image -->
+                <button class="video-button" style="top: 48%; left: 30%;"
+                  data-video='./static/videos/plan_latent_action/ood/OOD_1-Pick up the spoon.mp4'>1</button>
+                <button class="video-button" style="top: 50%; left: 70%;"
+                  data-video='./static/videos/plan_latent_action/ood/OOD_1-Pick up the cup.mp4'>2</button>
+              </div>
+              <p>
+                <iconify-icon icon="bi:1-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Pick up the spoon <br>
+                <iconify-icon icon="bi:2-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Pick up the cup
+              </p>
+            </div>
+          </div>
+
+          <div class="column">
+            <div class="content has-text-justified">
+              <div class="video-trigger">
+                <img class="initial-frame" src="./static/videos/plan_latent_action/ood/OOD_3-initial.png" alt="" />
+
+                <!-- Hidden video player -->
+                <video class="video-player" poster="./static/videos/plan_latent_action/ood/OOD_3-initial.png"
+                  preload="metadata" playsinline muted autoplay></video>
+
+                <!-- Buttons on top of image -->
+                <button class="video-button" style="top: 45%; left: 12%;"
+                  data-video='./static/videos/plan_latent_action/ood/OOD_3-Pick up the blue block.mp4'>1</button>
+                <button class="video-button" style="top: 60%; left: 60%;"
+                  data-video='./static/videos/plan_latent_action/ood/OOD_3-Pick up the green block.mp4'>2</button>
+              </div>
+              <p>
+                <iconify-icon icon="bi:1-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Pick up the blue block <br>
+                <iconify-icon icon="bi:2-circle-fill" height="1em" style="color: #7195c9;"></iconify-icon>
+                Pick up the green block
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Viz latent actions -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">
+          <iconify-icon icon="streamline-freehand:send-email-paper-plane-1" height="1em" style="color: #7195c9; vertical-align: -0.15em;"></iconify-icon>
+          Learning consistent latent actions
+        </h2>
+
+        <p style="margin-bottom: 0.5em;">
+          Our learned latent actions demonstrate consistent transferability. To illustrate this, we first
+          use the trained <strong>LAM</strong> to extract latent actions
+          <img src="static/images/symbol-z.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+          from a source video. These actions are then applied to a different initial image using the world
+          model to render the resulting future frames. Below, we present several examples showcasing the
+          application of the same sequence of latent actions (left video) across different contexts (right video).
+        </p>
+        <p style="margin-bottom: 1em;">
+          Additionally, we use the trained proprio FDM to predict future robot actions
+          <img src="static/images/symbol-a.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+          based on the current robot state
+          <img src="static/images/symbol-q.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+          and extracted latent actions
+          <img src="static/images/symbol-z.png" alt="frame" style="height: 1em; vertical-align:text-top ;">
+          . The predictions are then rendered within the simulator.
+        </p>
+
+        <div class="content has-text-justified">
+          <h3 class="title is-size-4" style="font-weight:300; margin-bottom: 1.5em;">Render with a world model</h3>
+
+          <!-- First row -->
+          <div class="columns is-centered">
+            <div class="column" style="padding: 0;">
+              <video class="video-viz-latent" preload="metadata" playsinline muted autoplay loop>
+                <source src="./static/videos/viz_latent_action/wm/fractal-action.mp4"
+                        type="video/mp4">
+              </video>
+            </div>
+
+            <div class="column" style="padding: 0;">
+              <div class="container">
+                <div class="carousel results-carousel carousel-onevideo">
+                  <div class="item item-fractal-transfer-1">
+                    <video poster="" id="fractal-transfer-1" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/fractal-transfer-1.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-fractal-transfer-2">
+                    <video poster="" id="fractal-transfer-2" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/fractal-transfer-2.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-fractal-transfer-3">
+                    <video poster="" id="fractal-transfer-3" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/fractal-transfer-3.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-fractal-transfer-4">
+                    <video poster="" id="fractal-transfer-4" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/fractal-transfer-4.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-fractal-transfer-5">
+                    <video poster="" id="fractal-transfer-5" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/fractal-transfer-5.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="width: 1px; align-items: center; margin-left: 30px; margin-right: 30px;">
+              <span style="
+              display: flex;
+              width: 1px;
+              height: 200px;
+              border-left: 2px dashed #999;
+              "></span>
+            </div>
+
+            <div class="column" style="padding: 0;">
+              <div class="content has-text-justified">
+                <video class="video-viz-latent" preload="metadata" playsinline muted autoplay loop>
+                  <source src="./static/videos/viz_latent_action/wm/ssv2-action-a.mp4"
+                          type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="column" style="padding: 0;">
+              <div class="container">
+                <div class="carousel results-carousel carousel-onevideo">
+                  <div class="item item-ssv2-transfer-a1">
+                    <video poster="" id="ssv2-transfer-a1" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/ssv2-transfer-a1.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-ssv2-transfer-a2">
+                    <video poster="" id="ssv2-transfer-a2" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/ssv2-transfer-a2.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-ssv2-transfer-a3">
+                    <video poster="" id="ssv2-transfer-a3" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/ssv2-transfer-a3.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-ssv2-transfer-a4">
+                    <video poster="" id="ssv2-transfer-a4" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/ssv2-transfer-a4.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- Second row -->
+          <div class="columns is-centered">
+            <div class="column" style="padding: 0;">
+              <div class="content has-text-justified">
+                <video class="video-viz-latent" preload="metadata" playsinline muted autoplay loop>
+                  <source src="./static/videos/viz_latent_action/wm/ssv2-action-b.mp4"
+                          type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="column" style="padding: 0;">
+              <div class="container">
+                <div class="carousel results-carousel carousel-onevideo">
+                  <div class="item item-ssv2-transfer-b1">
+                    <video poster="" id="ssv2-transfer-b1" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/ssv2-transfer-b1.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-ssv2-transfer-b2">
+                    <video poster="" id="ssv2-transfer-b2" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/ssv2-transfer-b2.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-ssv2-transfer-b3">
+                    <video poster="" id="ssv2-transfer-b3" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/ssv2-transfer-b3.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="width: 1px; align-items: center; margin-left: 30px; margin-right: 30px;">
+              <span style="
+              display: flex;
+              width: 1px;
+              height: 200px;
+              border-left: 2px dashed #999;
+              "></span>
+            </div>
+            
+
+            <div class="column" style="padding: 0;">
+              <div class="content has-text-justified">
+                <video class="video-viz-latent" preload="metadata" playsinline muted autoplay loop>
+                  <source src="./static/videos/viz_latent_action/wm/agibot-action.mp4"
+                          type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="column" style="padding: 0;">
+              <div class="container">
+                <div class="carousel results-carousel carousel-onevideo">
+                  <div class="item item-agibot-transfer-1">
+                    <video poster="" id="agibot-transfer-1" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/agibot-transfer-1.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-agibot-transfer-2">
+                    <video poster="" id="agibot-transfer-2" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/agibot-transfer-2.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-agibot-transfer-3">
+                    <video poster="" id="agibot-transfer-3" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/agibot-transfer-3.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-agibot-transfer-4">
+                    <video poster="" id="agibot-transfer-4" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/agibot-transfer-4.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-agibot-transfer-5">
+                    <video poster="" id="agibot-transfer-5" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/wm/agibot-transfer-5.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Proprio FDM -->
+          <h3 class="title is-size-4" style="font-weight:300; margin-top: 1em; margin-bottom: 1.5em;">Render with the proprio FDM and simulator</h3>
+
+          <div class="columns is-centered">
+            <div class="column" style="padding: 0;">
+              <div class="content has-text-justified">
+                <video class="video-viz-latent" preload="metadata" playsinline muted autoplay loop>
+                  <source src="./static/videos/viz_latent_action/sim/bridge-action.mp4"
+                          type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="column" style="padding: 0;">
+              <div class="container">
+                <div class="carousel results-carousel carousel-onevideo">
+                  <div class="item item-sim-bridge-transfer-1">
+                    <video poster="" id="sim-bridge-transfer-1" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/bridge-transfer-1.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-bridge-transfer-2">
+                    <video poster="" id="sim-bridge-transfer-2" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/bridge-transfer-2.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-bridge-transfer-3">
+                    <video poster="" id="sim-bridge-transfer-3" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/bridge-transfer-3.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-bridge-transfer-4">
+                    <video poster="" id="sim-bridge-transfer-4" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/bridge-transfer-4.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="width: 1px; align-items: center; margin-left: 30px; margin-right: 30px;">
+              <span style="
+              display: flex;
+              width: 1px;
+              height: 200px;
+              border-left: 2px dashed #999;
+              "></span>
+            </div>
+            
+
+            <div class="column" style="padding: 0;">
+              <div class="content has-text-justified">
+                <video class="video-viz-latent" preload="metadata" playsinline muted autoplay loop>
+                  <source src="./static/videos/viz_latent_action/sim/rt1-action-a.mp4"
+                          type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="column" style="padding: 0;">
+              <div class="container">
+                <div class="carousel results-carousel carousel-onevideo">
+                  <div class="item item-sim-rt1-transfer-a1">
+                    <video poster="" id="sim-rt1-transfer-a1" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/rt1-transfer-a1.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-rt1-transfer-a2">
+                    <video poster="" id="sim-rt1-transfer-a2" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/rt1-transfer-a2.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-rt1-transfer-a3">
+                    <video poster="" id="sim-rt1-transfer-a3" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/rt1-transfer-a3.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-rt1-transfer-a4">
+                    <video poster="" id="sim-rt1-transfer-a4" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/rt1-transfer-a4.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Second row -->
+
+          <div class="columns is-centered" style="margin-bottom: 1em;">
+
+            <div class="column" style="padding: 0;">
+              <div class="content has-text-justified">
+                <video class="video-viz-latent" preload="metadata" playsinline muted autoplay loop>
+                  <source src="./static/videos/viz_latent_action/sim/rt1-action-b.mp4"
+                          type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="column" style="padding: 0;">
+              <div class="container">
+                <div class="carousel results-carousel carousel-onevideo">
+                  <div class="item item-sim-rt1-transfer-b1">
+                    <video poster="" id="sim-rt1-transfer-b1" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/rt1-transfer-b1.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-rt1-transfer-b2">
+                    <video poster="" id="sim-rt1-transfer-b2" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/rt1-transfer-b2.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-rt1-transfer-b3">
+                    <video poster="" id="sim-rt1-transfer-b3" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/rt1-transfer-b3.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-rt1-transfer-b4">
+                    <video poster="" id="sim-rt1-transfer-b4" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/rt1-transfer-b4.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-rt1-transfer-b5">
+                    <video poster="" id="sim-rt1-transfer-b5" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/rt1-transfer-b5.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-rt1-transfer-b6">
+                    <video poster="" id="sim-rt1-transfer-b6" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/rt1-transfer-b6.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="width: 1px; align-items: center; margin-left: 30px; margin-right: 30px;">
+              <span style="
+              display: flex;
+              width: 1px;
+              height: 200px;
+              border-left: 2px dashed #999;
+              "></span>
+            </div>
+
+            <div class="column" style="padding: 0;">
+              <div class="content has-text-justified">
+                <video class="video-viz-latent" preload="metadata" playsinline muted autoplay loop>
+                  <source src="./static/videos/viz_latent_action/sim/ssv2-action-a.mp4"
+                          type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="column" style="padding: 0;">
+              <div class="container">
+                <div class="carousel results-carousel carousel-onevideo">
+                  <div class="item item-sim-ssv2-transfer-a1">
+                    <video poster="" id="sim-ssv2-transfer-a1" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/ssv2-transfer-a1.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-ssv2-transfer-a2">
+                    <video poster="" id="sim-ssv2-transfer-a2" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/ssv2-transfer-a2.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-ssv2-transfer-a3">
+                    <video poster="" id="sim-ssv2-transfer-a3" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/ssv2-transfer-a3.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-ssv2-transfer-a4">
+                    <video poster="" id="sim-ssv2-transfer-a4" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/ssv2-transfer-a4.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-ssv2-transfer-a5">
+                    <video poster="" id="sim-ssv2-transfer-a5" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/ssv2-transfer-a5.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-ssv2-transfer-a6">
+                    <video poster="" id="sim-ssv2-transfer-a6" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/ssv2-transfer-a6.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-ssv2-transfer-a7">
+                    <video poster="" id="sim-ssv2-transfer-a7" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/ssv2-transfer-a7.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-sim-ssv2-transfer-a8">
+                    <video poster="" id="sim-ssv2-transfer-a8" preload="metadata" controls muted playsinline width="100%">
+                      <source src="./static/videos/viz_latent_action/sim/ssv2-transfer-a8.mp4"
+                              type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/ Viz latent actions -->
+
+    
+
+
+    <!-- Manipulation tasks -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">
+          <iconify-icon icon="streamline-freehand:send-email-paper-plane-1" height="1em" style="color: #7195c9; vertical-align: -0.15em;"></iconify-icon>
+          Finishing manipulation tasks in simulation and the real world
+        </h2>
+        <div class="content has-text-justified">
+
+          <p>
+            Finally, following the common VLA evaluation protocols, we evaluated the performance of our method
+            in completing manipulation tasks across both simulated and real-world environments.
+            Below are several demonstrations showcasing its capabilities.
+          </p>
+
+          <!-- Simulation -->
+          <h3 class="title is-size-4" style="font-weight:300">Simulation</h3>
+          <div class="container is-max-desktop">
+            <div class="carousel results-carousel carousel-threevideo">
+              <div class="item item-google-place-apple">
+                <video poster="" id="google-place-apple" preload="auto" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/simulation/google-robot/place_apple_in_closed_top_drawer.mp4"
+                          type="video/mp4">
+                </video>
+                <p style="height: 3em;">Place apple in closed top drawer</p>
+              </div>
+              <div class="item item-libero-put-bowl">
+                <video poster="" id="libero-put-bowl" preload="auto" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/simulation/libero/put the black bowl in the bottom drawer of the cabinet and close it.mp4"
+                          type="video/mp4">
+                </video>
+                <p style="height: 3em;">Put the black bowl in the bottom drawer of the cabinet and close it</p>
+              </div>
+              <div class="item item-widow-x-put-eggplant">
+                <video poster="" id="widow-x-put-eggplant" preload="auto" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/simulation/widow-x/put_eggplant_in_basket.mp4"
+                          type="video/mp4">
+                </video>
+                <p style="height: 3em;">Put eggplant in basket</p>
+              </div>
+              <div class="item item-google-pick-can">
+                <video poster="" id="google-pick-can" preload="auto" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/simulation/google-robot/pick_horizontal_coke_can.mp4"
+                          type="video/mp4">
+                </video>
+                <p style="height: 3em;">Pick horizontal coke can</p>
+              </div>
+              <div class="item item-libero-put-soup">
+                <video poster="" id="libero-put-soup" preload="auto" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/simulation/libero/put both the alphabet soup and the cream cheese box in the basket.mp4"
+                          type="video/mp4">
+                </video>
+                <p style="height: 3em;">Put both the alphabet soup and the cream cheese box in the basket</p>
+              </div>
+              <div class="item item-widow-x-put-spoon">
+                <video poster="" id="widow-x-put-spoon" preload="auto" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/simulation/widow-x/put_spoon_on_table_cloth.mp4"
+                          type="video/mp4">
+                </video>
+                <p style="height: 3em;">Put spoon on table cloth</p>
+              </div>
+              <div class="item item-google-close-drawer">
+                <video poster="" id="google-close-drawer" preload="auto" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/simulation/google-robot/close_drawer.mp4"
+                          type="video/mp4">
+                </video>
+                <p style="height: 3em;">Close drawer</p>
+              </div>
+              <div class="item item-libero-turn-on-stove">
+                <video poster="" id="libero-turn-on-stove" preload="auto" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/simulation/libero/turn on the stove and put the moka pot on it.mp4"
+                          type="video/mp4">
+                </video>
+                <p style="height: 3em;">Turn on the stove and put the moka pot on it</p>
+              </div>
+              <div class="item item-widow-x-put-carrot">
+                <video poster="" id="widow-x-put-carrot" preload="auto" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/simulation/widow-x/put_carrot_on_plate.mp4"
+                          type="video/mp4">
+                </video>
+                <p style="height: 3em;">Put carrot on plate</p>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- Real - Realman -->
+          <h3 class="title is-size-4" style="font-weight:300">Real World - Realman Robot Arm</h3>
+          <div class="container is-max-desktop">
+            <div class="carousel results-carousel carousel-threevideo">
+              <div class="item item-realman-green-pos1">
+                <video poster="" id="realman-green-pos1" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/realman/[Success] Push the green block to position 1.mp4"
+                          type="video/mp4">
+                </video>
+                <p>Push the green block to <br> position 1</p>
+              </div>
+              <div class="item item-realman-green-pos4">
+                <video poster="" id="realman-green-pos4" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/realman/[Success] Push the green block to position 4.mp4"
+                          type="video/mp4">
+                </video>
+                <p>Push the green block to <br> position 4 <br> </p>
+              </div>
+              <div class="item item-realman-green-bowl2table">
+                <video poster="" id="realman-green-bowl2table" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/realman/[Success] Put the green block from blue bowl onto table.mp4"
+                          type="video/mp4">
+                </video>
+                <p>Put the green block from blue bowl <br> onto table</p>
+              </div>
+              <div class="item item-realman-green-table2bowl">
+                <video poster="" id="realman-green-table2bowl" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/realman/[Success] Put the green block on table into blue bowl.mp4"
+                          type="video/mp4">
+                </video>
+                <p>Put the green block on table <br> into blue bowl</p>
+              </div>
+              <div class="item item-realman-stack">
+                <video poster="" id="realman-stack" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/realman/[Success] Stack the wooden block onto the green block.mp4"
+                          type="video/mp4">
+                </video>
+                <p>Stack the wooden block <br> onto the green block</p>
+              </div>
+              <div class="item item-realman-unstack">
+                <video poster="" id="realman-unstack" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/realman/[Success] Unstack the wooden block from the green block.mp4"
+                          type="video/mp4">
+                </video>
+                <p>Unstack the wooden block <br> from the green block</p>
+              </div>
+            </div>
+          </div>
+
+
+          
+          <!-- Real - Xhand -->
+          <h3 class="title is-size-4" style="font-weight:300">Real World - XHAND1</h3>
+          <div class="container is-max-desktop">
+            <div class="carousel results-carousel carousel-threevideo">
+              <div class="item item-xhand-juice">
+                <video poster="" id="xhand-juice" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/xhand/Pouring orange juice into the cup.MP4"
+                          type="video/mp4">
+                </video>
+                <p>Pour orange juice into the cup</p>
+              </div>
+              <div class="item item-xhand-onion">
+                <video poster="" id="xhand-onion" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/xhand/Pick the onion into the basket.MP4"
+                          type="video/mp4">
+                </video>
+                <p>Pick the onion into the basket</p>
+              </div>
+              <div class="item item-xhand-cup">
+                <video poster="" id="xhand-cup" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/xhand/Straighten the cup.MP4"
+                          type="video/mp4">
+                </video>
+                <p>Straighten the cup</p>
+              </div>
+              <div class="item item-xhand-apple">
+                <video poster="" id="xhand-apple" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/xhand/Pick the apple into the blue bowl.MP4"
+                          type="video/mp4">
+                </video>
+                <p>Pick the apple into the blue bowl</p>
+              </div>
+              <div class="item item-xhand-ball-b">
+                <video poster="" id="xhand-ball-b" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/xhand/Flick the ball b.MP4"
+                          type="video/mp4">
+                </video>
+                <p>Flick the ball</p>
+              </div>
+              <div class="item item-xhand-toy">
+                <video poster="" id="xhand-toy" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/xhand/Pick the yellow toy into the basket.MP4"
+                          type="video/mp4">
+                </video>
+                <p>Pick the yellow toy into the basket</p>
+              </div>
+              <div class="item item-xhand-cube">
+                <video poster="" id="xhand-cube" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/xhand/Stack the blue cube on the red cube.MP4"
+                          type="video/mp4">
+                </video>
+                <p>Stack the blue cube on the red cube</p>
+              </div>
+              <div class="item item-xhand-mango">
+                <video poster="" id="xhand-mango" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/xhand/Pick the mango into the green plate.MP4"
+                          type="video/mp4">
+                </video>
+                <p>Pick the mango into the green plate</p>
+              </div>
+              <div class="item item-xhand-ball">
+                <video poster="" id="xhand-ball" preload="metadata" controls muted playsinline width="100%">
+                  <source src="./static/videos/manipulation/real/xhand/Flick the ball.MP4"
+                          type="video/mp4">
+                </video>
+                <p>Flick the ball</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/ Real robot tasks -->
+
+    <!-- Main performance -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">
+          <iconify-icon icon="streamline-freehand:send-email-paper-plane-1" height="1em" style="color: #7195c9; vertical-align: -0.15em;"></iconify-icon>
+          Experimental Results
+        </h2>
+        <div class="content has-text-justified">
+
+          <h3 class="title is-size-4" style="font-weight:300">SIMPLER</h3>
+
+          <table id="simpler-results" style="text-align: center; margin: 0 auto; border-collapse: collapse; width: auto;">
+            <caption style="margin-bottom: 0.8em; caption-side: top; text-align: left;">
+              Table 1: Performance on SIMPLER.
+              Methods marked with * are evaluated directly after pretraining, whereas other methods are evaluated
+              after post-training on corresponding dataset.</caption>
+            <thead>
+              <tr>
+                <th rowspan="2" style="vertical-align: middle; border-top-width: 3px; text-align: left;">Method</th>
+                <th colspan="5" style="border-top-width: 3px;">Google Robot</th>
+                <td style="width: 1em; border-bottom: none; border-top-width: 3px;">&nbsp;</td>
+                <th colspan="5" style="padding-left: 1em; border-top-width: 3px;">WidowX Robot</th>
+              </tr>
+              <tr>
+                <th>Pick</th>
+                <th>Move</th>
+                <th>Drawer</th>
+                <th>Place</th>
+                <th>Avg.</th>
+
+                <td style="width: 1em;">&nbsp;</td>
+                
+                <th>Carrot</th>
+                <th>Eggplant</th>
+                <th>Spoon</th>
+                <th>Cube</th>
+                <th>Avg.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border: none; text-align: left;">RT-1-X*</td>
+                <td style="border: none;">56.7</td>
+                <td style="border: none;">31.7</td>
+                <td style="border: none;"><strong>59.7</strong></td>
+                <td style="border: none;">21.3</td>
+                <td style="border: none;">42.4</td>
+
+                <td style="width: 1em; border: none;">&nbsp;</td>
+
+                <td style="border: none;">4.2</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">1.1</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;">Octo-base*</td>
+                <td style="border: none;">17.0</td>
+                <td style="border: none;">4.2</td>
+                <td style="border: none;">22.7</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">11.0</td>
+
+                <td style="width: 1em; border: none;">&nbsp;</td>
+
+                <td style="border: none;">8.3</td>
+                <td style="border: none;">43.1</td>
+                <td style="border: none;">12.5</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">16.0</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;">OpenVLA*</td>
+                <td style="border: none;">16.3</td>
+                <td style="border: none;">46.2</td>
+                <td style="border: none;">35.6</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">24.5</td>
+
+                <td style="width: 1em; border: none;">&nbsp;</td>
+
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">4.1</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">1.0</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;">RoboVLMs*</td>
+                <td style="border: none;">72.7</td>
+                <td style="border: none;">66.3</td>
+                <td style="border: none;">26.8</td>
+                <td style="border: none;"><strong>36.1</strong></td>
+                <td style="border: none;">50.5</td>
+
+                <td style="width: 1em; border: none;">&nbsp;</td>
+
+                <td style="border: none;">25.0</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">20.8</td>
+                <td style="border: none;">8.3</td>
+                <td style="border: none;">13.5</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">RoboVLM</td>
+                <td>77.3</td>
+                <td>61.7</td>
+                <td>43.5</td>
+                <td>24.1</td>
+                <td>51.7</td>
+
+                <td style="width: 1em;">&nbsp;</td>
+
+                <td>20.8</td>
+                <td><strong>79.2</strong></td>
+                <td>45.8</td>
+                <td>4.2</td>
+                <td>37.5</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;">GR00T</td>
+                <td style="border: none;">0.7</td>
+                <td style="border: none;">1.9</td>
+                <td style="border: none;">2.9</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">1.4</td>
+
+                <td style="width: 1em; border: none;">&nbsp;</td>
+
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">13.9</td>
+                <td style="border: none;">1.4</td>
+                <td style="border: none;">0.0</td>
+                <td style="border: none;">3.8</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;">MoTo</td>
+                <td style="border: none;">74.0</td>
+                <td style="border: none;">60.4</td>
+                <td style="border: none;">43.1</td>
+                <td style="border: none;">N/A</td>
+                <td style="border: none;">N/A</td>
+
+                <td style="width: 1em; border: none;">&nbsp;</td>
+
+                <td style="border: none;">N/A</td>
+                <td style="border: none;">N/A</td>
+                <td style="border: none;">N/A</td>
+                <td style="border: none;">N/A</td>
+                <td style="border: none;">N/A</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">LAPA</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+
+                <td style="width: 1em;">&nbsp;</td>
+
+                <td>45.8</td>
+                <td>58.3</td>
+                <td>70.8</td>
+                <td>54.2</td>
+                <td>57.3</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;"><strong>Ours</strong> w/o latent</td>
+                <td style="border: none;">56.3</td>
+                <td style="border: none;">25.8</td>
+                <td style="border: none;">27.3</td>
+                <td style="border: none;">13.9</td>
+                <td style="border: none;">30.8</td>
+
+                <td style="width: 1em; border: none;">&nbsp;</td>
+
+                <td style="border: none;">31.3</td>
+                <td style="border: none;">74.6</td>
+                <td style="border: none;">61.7</td>
+                <td style="border: none;">28.3</td>
+                <td style="border: none;">49.0</td>
+              </tr>
+              <tr>
+                <td style="border-bottom-width: 3px; text-align: left;"><strong>Ours</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>98.7</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>75.0</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>59.3</strong></td>
+                <td style="border-bottom-width: 3px;">5.6</td>
+                <td style="border-bottom-width: 3px;"><strong>59.6</strong></td>
+
+                <td style="width: 1em; border-bottom-width: 3px;">&nbsp;</td>
+
+                <td style="border-bottom-width: 3px;"><strong>46.3</strong></td>
+                <td style="border-bottom-width: 3px;">64.6</td>
+                <td style="border-bottom-width: 3px;"><strong>77.9</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>61.3</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>62.5</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          
+        </div>
+
+        <div class="content has-text-justified">
+          <h3 class="title is-size-4" style="font-weight:300">LIBERO</h3>
+
+          
+          <table id="libero-results" style="text-align: center; margin: 0 auto; border-collapse: collapse; width: auto;">
+            <caption style="margin-bottom: 0.8em; caption-side: top; text-align: center;">
+              Table 2: Performance on 4 LIBERO task suites.</caption>
+            <thead>
+              <tr>
+                <th style="vertical-align: middle; border-top-width: 3px; text-align: left;">Method</th>
+                <th style="border-top-width: 3px;">Spatial</th>
+                <th style="border-top-width: 3px;">Object</th>
+                <th style="border-top-width: 3px;">Goal</th>
+                <th style="border-top-width: 3px;">Long</th>
+                <th style="border-top-width: 3px;">Average</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border: none; text-align: left;">Diffusion Policy</td>
+                <td style="border: none;">78.3</td>
+                <td style="border: none;">92.5</td>
+                <td style="border: none;">68.3</td>
+                <td style="border: none;">50.5</td>
+                <td style="border: none;">72.4</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;">Octo-base</td>
+                <td style="border: none;">78.9</td>
+                <td style="border: none;">85.7</td>
+                <td style="border: none;">84.6</td>
+                <td style="border: none;">51.1</td>
+                <td style="border: none;">75.1</td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">OpenVLA</td>
+                <td>84.7</td>
+                <td>88.4</td>
+                <td>79.2</td>
+                <td>53.7</td>
+                <td>76.5</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;"><strong>Ours</strong> w/o latent</td>
+                <td style="border: none;">86.0</td>
+                <td style="border: none;">86.5</td>
+                <td style="border: none;">85.0</td>
+                <td style="border: none;">70.0</td>
+                <td style="border: none;">81.9</td>
+              </tr>
+              <tr>
+                <td style="border-bottom-width: 3px; text-align: left;"><strong>Ours</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>97.5</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>97.0</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>91.5</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>74.5</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>90.1</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="content has-text-justified">
+          <h3 class="title is-size-4" style="font-weight:300">Real robots</h3>
+
+          <table id="realman-results" style="text-align: center; margin: 0 auto; border-collapse: collapse; width: auto;">
+            <caption style="margin-bottom: 0.8em; caption-side: top; text-align: center;">
+              Table 3: Performance on Realman robot arm.</caption>
+            <thead>
+              <tr>
+                <th style="vertical-align: middle; border-top-width: 3px; text-align: left;">Method</th>
+                <th style="border-top-width: 3px;">Pick in</th>
+                <th style="border-top-width: 3px;">Pick out</th>
+                <th style="border-top-width: 3px;">Push</th>
+                <th style="border-top-width: 3px;">Stack</th>
+                <th style="border-top-width: 3px;">Unstack</th>
+                <th style="border-top-width: 3px;">Change block color</th>
+                <th style="border-top-width: 3px;">Change table cover</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border: none; text-align: left;">GR00T</td>
+                <td style="border: none;">30</td>
+                <td style="border: none;">70</td>
+                <td style="border: none;">10</td>
+                <td style="border: none;">10</td>
+                <td style="border: none;">60</td>
+                <td style="border: none;">50</td>
+                <td style="border: none;">30</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;"><strong>Ours</strong> w/o latent</td>
+                <td style="border: none;"><strong>40</strong></td>
+                <td style="border: none;">80</td>
+                <td style="border: none;">30</td>
+                <td style="border: none;"><strong>60</strong></td>
+                <td style="border: none;">70</td>
+                <td style="border: none;">40</td>
+                <td style="border: none;">30</td>
+              </tr>
+              <tr>
+                <td style="border-bottom-width: 3px; text-align: left;"><strong>Ours</strong></td>
+                <td style="border-bottom-width: 3px;">30</td>
+                <td style="border-bottom-width: 3px;"><strong>100</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>50</strong></td>
+                <td style="border-bottom-width: 3px;">50</td>
+                <td style="border-bottom-width: 3px;"><strong>100</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>60</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>60</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table id="xhand-results" style="text-align: center; margin: 0 auto; border-collapse: collapse; width: auto;">
+            <caption style="margin-bottom: 0.8em; margin-top: 2em; caption-side: top; text-align: center;">
+              Table 4: Performance on Xarm robot arm with XHAND dexterous hand.</caption>
+            <thead>
+              <tr>
+                <th rowspan="2" style="vertical-align: middle; border-top-width: 3px; text-align: left;">Method</th>
+                <th colspan="2" style="border-top-width: 3px;">Pick & Place</th>
+                <td style="width: 0.3em; border-bottom: none; border-top-width: 3px;">&nbsp;</td>
+                <th colspan="2" style="border-top-width: 3px;">Stack Cube</th>
+                <td style="width: 0.3em; border-bottom: none; border-top-width: 3px;">&nbsp;</td>
+                <th colspan="2" style="border-top-width: 3px;">Place Cup Upright</th>
+                <td style="width: 0.3em; border-bottom: none; border-top-width: 3px;">&nbsp;</td>
+                <th colspan="2" style="border-top-width: 3px;">Pour Water</th>
+                <td style="width: 0.3em; border-bottom: none; border-top-width: 3px;">&nbsp;</td>
+                <th colspan="2" style="border-top-width: 3px;">Flick Ball</th>
+              </tr>
+              <tr>
+                <th>seen</th>
+                <th>unseen</th>
+                <td style="width: 0.3em;">&nbsp;</td>
+                <th>seen</th>
+                <th>unseen</th>
+                <td style="width: 0.3em;">&nbsp;</td>
+                <th>seen</th>
+                <th>unseen</th>
+                <td style="width: 0.3em;">&nbsp;</td>
+                <th>seen</th>
+                <th>unseen</th>
+                <td style="width: 0.3em;">&nbsp;</td>
+                <th>seen</th>
+                <th>unseen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border: none; text-align: left;">GR1</td>
+                <td style="border: none;">56</td>
+                <td style="border: none;">40</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">15</td>
+                <td style="border: none;">5</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">0</td>
+                <td style="border: none;">0</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">0</td>
+                <td style="border: none;">0</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">40</td>
+                <td style="border: none;">10</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;">GR00T</td>
+                <td style="border: none;">44</td>
+                <td style="border: none;">28</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">20</td>
+                <td style="border: none;">0</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">20</td>
+                <td style="border: none;">0</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">0</td>
+                <td style="border: none;">0</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">30</td>
+                <td style="border: none;">0</td>
+              </tr>
+              <tr>
+                <td style="border: none; text-align: left;"><strong>Ours</strong> w/o latent</td>
+                <td style="border: none;">72</td>
+                <td style="border: none;">60</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">70</td>
+                <td style="border: none;">40</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">40</td>
+                <td style="border: none;"><strong>30</strong></td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;">40</td>
+                <td style="border: none;">10</td>
+                <td style="width: 0.3em; border: none;"></td>
+                <td style="border: none;"><strong>50</strong></td>
+                <td style="border: none;">30</td>
+              </tr>
+              <tr>
+                <td style="border-bottom-width: 3px; text-align: left;"><strong>Ours</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>84</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>68</strong></td>
+                <td style="width: 0.3em; border-bottom-width: 3px;"></td>
+                <td style="border-bottom-width: 3px;"><strong>75</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>50</strong></td>
+                <td style="width: 0.3em; border-bottom-width: 3px;"></td>
+                <td style="border-bottom-width: 3px;"><strong>60</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>30</strong></td>
+                <td style="width: 0.3em; border-bottom-width: 3px;"></td>
+                <td style="border-bottom-width: 3px;"><strong>60</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>30</strong></td>
+                <td style="width: 0.3em; border-bottom-width: 3px;"></td>
+                <td style="border-bottom-width: 3px;"><strong>50</strong></td>
+                <td style="border-bottom-width: 3px;"><strong>40</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          
+
+        </div>
+
+        </div>
+
+      </div>
+    </div>
+    <!--/ Main performance -->
+
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+      @article{chen2025villa0x0,
+        title   = {villa-X: Enhancing Latent Action Modeling in Vision-Language-Action Models},
+        author  = {Xiaoyu Chen and Hangxing Wei and Pushi Zhang and Chuheng Zhang and Kaixin Wang and Yanjiang Guo and Rushuai Yang and Yucen Wang and Xinquan Xiao and Li Zhao and Jianyu Chen and Jiang Bian},
+        year    = {2025},
+        journal = {arXiv preprint arXiv: 2507.23682}
+      }
+    </code></pre>
+  </div>
+</section>
+
+
+<div id="bottombar">
+    <div class="row">
+        <div>This website is adapted from
+            <a href="https://github.com/nerfies/nerfies.github.io">NeRFies</a>
+            under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+        </div>
+        <div style="display: flex; flex-direction: row; gap: 8px;">
+            <a href="https://github.com/microsoft/villa-x/issues">Contact Us on GitHub</a>
+            <span style="width: 1px; background-color: rgba(0, 0, 0, 0.7);"></span>
+            <a href="https://go.microsoft.com/fwlink/?LinkId=521839">Privacy & Cookies</a>
+            <span style="width: 1px; background-color: rgba(0, 0, 0, 0.7);"></span>
+            <a href="https://go.microsoft.com/fwlink/?linkid=2259814">Consumer Health Privacy</a>
+            <span style="width: 1px; background-color: rgba(0, 0, 0, 0.7);"></span>
+            <a href="https://go.microsoft.com/fwlink/?LinkID=246338">Terms of Use</a>
+            <span style="width: 1px; background-color: rgba(0, 0, 0, 0.7);"></span>
+            <a href="https://go.microsoft.com/fwlink/?linkid=2196228">Trademarks</a>
+            <span style="width: 1px; background-color: rgba(0, 0, 0, 0.7);"></span>
+            <span>© 2025 Microsoft</span>
+        </div>
+    </div>
+</div>
+
+
+<script>
+  document.querySelectorAll('.video-trigger').forEach(set => {
+    const image = set.querySelector('.initial-frame');
+    const video = set.querySelector('.video-player');
+    const buttons = set.querySelectorAll('.video-button');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const videoSrc = button.getAttribute('data-video');
+        video.src = videoSrc;
+        video.style.display = 'block';
+        image.style.display = 'none';
+        buttons.forEach(btn => btn.style.display = 'none');
+
+        video.onended = () => {
+          video.style.display = 'none';
+          image.style.display = 'block';
+          buttons.forEach(btn => btn.style.display = 'inline-block');
+          video.src = '';
+        };
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

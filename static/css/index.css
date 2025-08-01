@@ -1,0 +1,281 @@
+body {
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 200;
+}
+
+.strong {
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 500;
+}
+
+.footer .icon-link {
+    font-size: 25px;
+    color: #000;
+}
+
+.link-block a {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.dnerf {
+  font-variant: small-caps;
+}
+
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.teaser {
+  font-family: 'Fira Sans', sans-serif;
+}
+
+.title {
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 400;
+}
+
+
+.publication-banner {
+  max-height: parent;
+
+}
+
+.publication-banner video {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  object-fit: fit;
+}
+
+.publication-header .hero-body {
+}
+
+.publication-title {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: x-large;
+    font-weight: 400;
+}
+
+.publication-authors {
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 200;
+}
+
+.publication-venue {
+    color: #555;
+    width: fit-content;
+    font-weight: bold;
+}
+
+.publication-awards {
+    color: #ff3860;
+    width: fit-content;
+    font-weight: bolder;
+}
+
+.publication-authors a {
+   color: #1677b6;
+}
+
+.publication-authors a:hover {
+    text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.publication-banner img {
+}
+
+.publication-authors {
+  /*color: #4286f4;*/
+}
+
+.publication-video {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+
+    overflow: hidden;
+    border-radius: 10px !important;
+}
+
+.publication-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.publication-body img {
+}
+
+.results-carousel {
+  overflow: hidden;
+}
+
+.results-carousel .item {
+  margin: 10px;
+  overflow: hidden;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.results-carousel video {
+  margin-bottom: 10px;
+}
+
+.carousel-onevideo {
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+.carousel-onevideo .item {
+  margin: 0px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: none;
+  padding-bottom: 0;
+}
+
+.carousel-onevideo .slider-navigation-previous {
+  width: 25px;
+  height: 25px;
+}
+.carousel-onevideo .slider-navigation-next {
+  width: 25px;
+  height: 25px;
+}
+
+.carousel-onevideo video {
+  margin: 0;
+  border-radius: 10px;
+}
+
+.video-viz-latent {
+  height: 200px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.video-trigger {
+  position: relative;
+  margin: auto;
+  width: 224px;
+  aspect-ratio: 1 / 1;
+  border: "none";
+  display: inline-block;
+}
+
+.video-button {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #7EA6E0;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 2;
+}
+
+.video-button:hover {
+  transform: scale(1.3); /* Enlarge to 130% */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional shadow */
+}
+
+.initial-frame, .video-player{
+  height: 224px;
+  object-fit: cover;
+  display: block;
+}
+
+.video-player {
+    display: none;
+}
+
+
+
+.interpolation-panel {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.interpolation-panel .interpolation-image {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.interpolation-video-column {
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+#interpolation-image-wrapper {
+  width: 100%;
+}
+#interpolation-image-wrapper img {
+  border-radius: 5px;
+}
+
+#bottombar {
+    position: relative;
+    bottom: 0px;
+    height: 60px;
+    width: 100%;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    user-select: none;
+}
+
+#bottombar .row {
+    width: 80%;
+    padding: 0px 0%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+}
+
+#bottombar div {
+    color: rgb(0, 0, 0, 0.7);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+#bottombar div a {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+#bottombar div a:hover {
+    color: rgb(80, 76, 76);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+#bottombar div span {
+    font-weight: 400;
+}
