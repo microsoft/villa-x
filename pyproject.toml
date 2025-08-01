@@ -1,0 +1,59 @@
+[project]
+name = "villax"
+version = "0.1.0"
+description = "A Vision-Language-Latent-Action Model"
+authors = [
+    { name = "Xiaoyu Chen", email = "chen-xy21@mails.tsinghua.edu.cn" },
+    { name = "Hangxing Wei", email = "whxway@whu.edu.cn" },
+]
+readme = "README.md"
+requires-python = "==3.10.*"
+classifiers = ["Programming Language :: Python :: 3"]
+dependencies = [
+    "bitsandbytes~=0.45.2",
+    "einops",
+    "gsutil>=5.32",
+    "imageio",
+    "matplotlib",
+    "numpy<2",
+    "pillow",
+    "protobuf~=4.25.8",
+    "torch~=2.7.1",
+    "transformers~=4.50.0",
+    "tqdm",
+    "loguru>=0.7.3",
+    "timm>=1.0.12,<2",
+    "xformers>=0.0.29.post3",
+    "pydantic>=2.11.7",
+    "av>=15.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+exclude = []
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["A", "B", "E", "F", "I", "RUF", "W"]
+ignore = ["E203", "E501", "B006", "B026", "B905"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402", "F401", "F403"]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "ipython>=8.36.0",
+    "ipywidgets>=8.1.7",
+    "seaborn>=0.13.2",
+    "typer>=0.15.3",
+]
+
+[tool.uv]
+default-groups = ["dev"]
