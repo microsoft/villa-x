@@ -9,4 +9,9 @@ if "_DEBUG" not in os.environ:
 
 from .model import IgorModel
 
-__all__ = ["IgorModel"]
+try:
+    from .actor_model import ActorModel, ActorModelConfig
+    __all__ = ["IgorModel", "ActorModel", "ActorModelConfig"]
+except ImportError:
+    # huggingface_hub might not be installed
+    __all__ = ["IgorModel"]

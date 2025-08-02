@@ -25,6 +25,7 @@ in Vision-Language-Action Models](https://arxiv.org/abs/2507.23682).
 
 ## 🔥 News
 
+* 2025/08/02: Added Actor Model implementation with Hugging Face Hub integration for Molmo and InternVL.
 * 2025/08/01: Initial release of the paper, project website, pre-trained Latent Action Model (LAM), and LAM inference code.
 
 ## 📋 Release plan
@@ -88,11 +89,37 @@ for i in range(len(latent_action[0])):
 
 We also provide a Jupyter [notebook](demo/notebook.ipynb) for a step-by-step guide on how to use the pre-trained latent action model.
 
+### Actor Model Usage
+
+The Actor Model predicts robot actions from visual observations and can integrate with the LAM for enhanced planning:
+
+```python
+from lam.actor_model import ActorModel
+
+# Setup Actor Model for Molmo VLM
+actor_model = ActorModel.setup_actor_model_for_training(
+    vlm_model_name="microsoft/molmo-7B-D-0924",
+    use_latent_actions=True,
+    action_dim=7,
+    action_horizon=10,
+)
+
+# Extract visual features using your VLM (Molmo, InternVL, etc.)
+visual_features = extract_vlm_features(images)  # Shape: [batch, sequence, features]
+
+# Predict robot actions
+actions = actor_model.predict_actions(visual_features)
+print(f"Predicted actions: {actions.shape}")  # [batch, action_horizon, action_dim]
+```
+
+For detailed usage and training instructions, see the [Actor Model Guide](docs/ACTOR_MODEL_HUB_GUIDE.md).
+
 ## 🤗 Pre-trained Models
 
 | Model ID | Description | Params | Link |
 |----------|-------------|--------|------|
 | `microsoft/villa-x/lam` | Latent action model | 955M | 🤗 [Link](https://huggingface.co/microsoft/villa-x/tree/main/lam) |
+| `microsoft/villa-x-actor-*` | Actor models (coming soon) | ~50M | 🤗 Available once training completes |
 
 ## 📑 BibTeX
 
